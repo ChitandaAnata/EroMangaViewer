@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <!--
+      目标框架是 .NET Framework 4.8，不是 .NET 10。
+      4.8 是 Win10 1903+ / Win11 的系统组件，装机就有 —— 安装器因此只有几百 KB，
+      不用把 100 MB 的运行时塞进安装包里，用户也不需要额外装任何东西。
+      以前用过 net10.0-windows 自包含（188 MB）和框架依赖（要求用户装 .NET 10），
+      前者太肥、后者会让没装运行时的用户看到一个英文报错框，两者都不如 4.8。
+    -->
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>10.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AssemblyName>MangaShelf-Setup</AssemblyName>
+    <RootNamespace>MangaShelf.Setup</RootNamespace>
+    <ApplicationIcon>assets\app.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <NeutralLanguage>zh-Hans</NeutralLanguage>
+    <Version>1.0.0</Version>
+    <FileVersion>1.0.0.0</FileVersion>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <Product>MangaShelf</Product>
+    <Company>MangaShelf</Company>
+    <AssemblyTitle>MangaShelf 安装程序</AssemblyTitle>
+    <Description>MangaShelf 安装程序</Description>
+    <Copyright>© 2026 MangaShelf</Copyright>
+    <DebugType>none</DebugType>
+    <!-- 单文件/自包含都是 .NET Core 才有的，net48 输出就是一个 exe，不用配 -->
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- 本机没装 .NET Framework 4.8 targeting pack，用 NuGet 里的引用程序集编译，省掉装 VS -->
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+  <ItemGroup>
+    <!-- net48 没有 UseWindowsForms 这个 SDK 开关，得手动引程序集 -->
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <!-- 建快捷方式那段用了 dynamic，net48 必须显式引这个程序集 -->
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\desktop\ui\Theme.cs" Link="ui\Theme.cs" />
+    <Compile Include="..\desktop\ui\Controls.cs" Link="ui\Controls.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="payload.zip" LogicalName="payload.zip" Condition="Exists('payload.zip')" />
+  </ItemGroup>
+</Project>

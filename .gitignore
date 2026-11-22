@@ -1,0 +1,39 @@
+# ── 用户数据与示例库：含真实作品和个人阅读记录，不随仓库发布 ──
+data/
+sample_library/
+
+# ── 构建产物 ──
+build/
+dist/
+installer/bin/
+installer/obj/
+installer/payload.zip
+desktop/bin/
+desktop/obj/
+
+# ── 安装包：通过 GitHub Release 分发，不进仓库 ──
+MangaShelf-Setup.exe
+
+# ── 开发版外壳：dev.bat 编出来的「当前版本」，本机自用 ──
+/MangaShelf.exe
+/WebView2Loader.dll
+/dev-home.txt
+
+# ── 界面截图含作品封面，不随仓库发布 ──
+docs/screenshots/
+
+# ── 一次性修复本机目录权限标签的脚本，只对本机有意义 ──
+tools/fix_low_integrity.cmd
+tools/fix_low_integrity.ps1
+
+# ── 本机运行痕迹 ──
+.ms-uninstall/
+.workbuddy/
+*.log
+__pycache__/
+*.pyc
+
+# ── 系统文件 ──
+Thumbs.db
+desktop.ini
+.DS_Store

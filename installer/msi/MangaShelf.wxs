@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+
+  <Package Name="MangaShelf"
+           Manufacturer="MangaShelf"
+           Version="1.0.0"
+           UpgradeCode="8f3c1d42-6b7a-4e59-9c21-5a0d7e4b3c18"
+           Scope="perMachine"
+           Compressed="yes"
+           Codepage="936"
+           Language="2052">
+
+    <SummaryInformation Description="MangaShelf 本地漫画书架" Manufacturer="MangaShelf" />
+
+    <MajorUpgrade DowngradeErrorMessage="已安装更新版本的 MangaShelf，请先卸载它。" />
+    <MediaTemplate EmbedCab="yes" CompressionLevel="high" />
+
+    <Property Id="ARPCOMMENTS" Value="本地漫画书架：扫描本机漫画文件，按标签整理和阅读。" />
+
+    <Icon Id="AppIcon" SourceFile="$(var.SrcDir)\MangaShelf.exe" />
+    <Property Id="ARPPRODUCTICON" Value="AppIcon" />
+
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="INSTALLFOLDER" Name="MangaShelf" />
+    </StandardDirectory>
+
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="AppMenuFolder" Name="MangaShelf" />
+    </StandardDirectory>
+
+    <StandardDirectory Id="DesktopFolder" />
+
+    <Feature Id="Main" Title="MangaShelf" Level="1">
+      <ComponentGroupRef Id="AppFiles" />
+      <ComponentGroupRef Id="Shortcuts" />
+    </Feature>
+
+    <!-- 整个程序目录：外壳 + WebView2 loader + backend(PyInstaller) + web 前端 -->
+    <ComponentGroup Id="AppFiles" Directory="INSTALLFOLDER">
+      <Files Include="$(var.SrcDir)\**" />
+    </ComponentGroup>
+
+    <ComponentGroup Id="Shortcuts">
+      <Component Id="StartMenuShortcuts" Directory="AppMenuFolder" Guid="*">
+        <Shortcut Id="AppShortcut"
+                  Name="MangaShelf"
+                  Description="本地漫画书架"
+                  Target="[INSTALLFOLDER]MangaShelf.exe"
+                  WorkingDirectory="INSTALLFOLDER" />
+        <Shortcut Id="UninstallShortcut"
+                  Name="卸载 MangaShelf"
+                  Description="从这台电脑移除 MangaShelf"
+                  Target="[System64Folder]msiexec.exe"
+                  Arguments="/x [ProductCode]" />
+        <RemoveFolder Id="AppMenuFolder" On="uninstall" />
+        <RegistryValue Root="HKLM" Key="Software\MangaShelf" Name="shortcuts" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+
+      <Component Id="DesktopShortcut" Directory="DesktopFolder" Guid="*">
+        <Shortcut Id="DesktopAppShortcut"
+                  Name="MangaShelf"
+                  Description="本地漫画书架"
+                  Target="[INSTALLFOLDER]MangaShelf.exe"
+                  WorkingDirectory="INSTALLFOLDER" />
+        <RegistryValue Root="HKLM" Key="Software\MangaShelf" Name="desktop" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+
+    <!-- 标准安装向导：欢迎 → 许可 → 选择安装位置 → 安装 → 完成 -->
+    <ui:WixUI Id="WixUI_InstallDir" InstallDirectory="INSTALLFOLDER" />
+    <WixVariable Id="WixUILicenseRtf" Value="$(var.LicenseRtf)" />
+
+  </Package>
+</Wix>

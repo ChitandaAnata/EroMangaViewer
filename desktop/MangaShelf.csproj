@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>MangaShelf</AssemblyName>
+    <RootNamespace>MangaShelf</RootNamespace>
+    <Version>1.0.0</Version>
+    <FileVersion>1.0.0.0</FileVersion>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <Product>MangaShelf</Product>
+    <Company>MangaShelf</Company>
+    <AssemblyTitle>MangaShelf</AssemblyTitle>
+    <Description>本地漫画书架</Description>
+    <ApplicationIcon>..\assets\MangaShelf.ico</ApplicationIcon>
+    <!-- 跟随显示器 DPI 变化，页面按 CSS 像素布局，不会被系统缩放拉花 -->
+    <ApplicationHighDpiMode>PerMonitorV2</ApplicationHighDpiMode>
+    <SatelliteResourceLanguages>zh-Hans</SatelliteResourceLanguages>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <InvariantGlobalization>false</InvariantGlobalization>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3485.44" />
+  </ItemGroup>
+</Project>
